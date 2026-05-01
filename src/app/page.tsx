@@ -521,7 +521,7 @@ function GlobalStyles() {
         .nav-links a { font-size: 0.76rem; }
         .cta { padding: 80px 32px; }
         .footer { padding: 24px 32px; flex-direction: column; gap: 16px; }
-        .hero-btn { margin: 0 auto; }
+        .hero-btn { display: none; }
         .mobile-download {
           display: block; position: fixed; left: 16px; right: 16px; bottom: 14px; z-index: 130;
         }
