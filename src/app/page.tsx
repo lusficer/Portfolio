@@ -1088,7 +1088,7 @@ function ContactModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
               <span className="contact-icon">in</span>
               <div>
                 <p className="contact-label">LinkedIn</p>
-                <p className="contact-value">linkedin.com/in/bach-huy-hoang</p>
+                <p className="contact-value">https://www.linkedin.com/in/hoang-bach-huy-275248229/</p>
               </div>
             </div>
           </a>
@@ -1097,7 +1097,7 @@ function ContactModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
               <span className="contact-icon">⌥</span>
               <div>
                 <p className="contact-label">GitHub</p>
-                <p className="contact-value">github.com/bachhuyhoang</p>
+                <p className="contact-value">https://github.com/lusficer</p>
               </div>
             </div>
           </a>
