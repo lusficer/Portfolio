@@ -382,6 +382,7 @@ function GlobalStyles() {
       .exp-contribution-item {
         font-family: var(--font-body); font-size: 0.88rem;
         color: var(--text-secondary); line-height: 1.65;
+
         font-weight: 300; padding-left: 16px; position: relative;
       }
       .exp-contribution-item::before {
@@ -477,80 +478,21 @@ function GlobalStyles() {
         transform: translateY(-2px);
       }
 
-      /* Contact Modal */
-      .modal-overlay {
-        position: fixed; inset: 0; z-index: 200;
-        background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
-        display: flex; align-items: center; justify-content: center;
-        animation: fadeIn 0.3s ease;
-      }
-      .modal-content {
-        background: var(--bg-secondary); border: 1px solid var(--border);
-        padding: 48px; max-width: 480px; width: 90%;
-        position: relative; animation: fadeUp 0.4s ease;
-      }
-      .modal-close {
-        position: absolute; top: 16px; right: 16px;
-        background: none; border: 1px solid var(--border);
-        color: var(--text-muted); width: 36px; height: 36px;
-        font-size: 1.1rem; cursor: pointer; display: flex;
-        align-items: center; justify-content: center;
-        font-family: var(--font-body); transition: all 0.3s;
-      }
-      .modal-close:hover { border-color: var(--accent); color: var(--accent); }
-      .modal-title {
-        font-family: var(--font-display); font-size: 1.8rem;
-        font-weight: 600; color: var(--accent); margin-bottom: 32px;
-      }
-      .contact-list { display: flex; flex-direction: column; gap: 12px; }
-      .contact-item {
-        display: flex; align-items: center; gap: 16px;
-        justify-content: space-between;
-        padding: 14px 18px; border: 1px solid var(--border);
-        background: var(--bg-card); text-decoration: none;
-        transition: all 0.3s; cursor: pointer;
-      }
-      .contact-item-info { display: flex; align-items: center; gap: 16px; min-width: 0; }
-      .contact-item:hover { border-color: var(--accent); }
-      .contact-item-static { cursor: default; }
-      .contact-item-static:hover { border-color: var(--border); }
-      .contact-item-copy {
-        font-family: var(--font-body); font-size: 0.76rem;
-        letter-spacing: 0.08em; text-transform: uppercase;
-        color: var(--accent); background: transparent;
-        border: 1px solid var(--border); padding: 6px 10px;
-        cursor: pointer; transition: all 0.3s;
-      }
-      .contact-item-copy:hover { border-color: var(--accent); }
-      .contact-item-copy.is-copied {
-        color: var(--text-primary); border-color: var(--accent);
-        background: var(--accent-glow);
-      }
-      .contact-icon {
-        width: 40px; height: 40px; display: flex;
-        align-items: center; justify-content: center;
-        background: var(--accent-glow); border: 1px solid var(--accent);
-        font-size: 1rem; flex-shrink: 0;
-      }
-      .contact-label {
-        font-family: var(--font-body); font-size: 0.72rem;
-        text-transform: uppercase; letter-spacing: 0.1em;
-        color: var(--text-muted); font-weight: 500;
-      }
-      .contact-value {
-        font-family: var(--font-body); font-size: 0.92rem;
-        color: var(--text-primary); font-weight: 400; margin-top: 2px;
-      }
-
       /* Footer */
       .footer {
         padding: 32px 64px; background: var(--bg-primary);
         border-top: 1px solid var(--border);
-        display: flex; justify-content: center; align-items: center;
+        display: flex; justify-content: space-between; align-items: center;
       }
       .footer-copy {
         font-family: var(--font-body); font-size: 0.75rem; color: var(--text-muted);
       }
+      .footer-links { display: flex; gap: 24px; }
+      .footer-links a {
+        font-family: var(--font-body); font-size: 0.78rem; color: var(--text-secondary);
+        text-decoration: none; transition: color 0.3s;
+      }
+      .footer-links a:hover { color: var(--accent); }
 
       /* Responsive */
       @media (max-width: 900px) {
@@ -567,7 +509,7 @@ function GlobalStyles() {
         .nav.scrolled { padding: 12px 24px; }
         .nav-links { gap: 20px; }
         .cta { padding: 80px 32px; }
-        .footer { padding: 24px 32px; }
+        .footer { padding: 24px 32px; flex-direction: column; gap: 16px; }
         .hero-btn { margin: 0 auto; }
       }
       @media (max-width: 600px) {
@@ -638,8 +580,8 @@ const DATA = {
   email: "bachhuy410@gmail.com",
   phone: "0795945247",
   location: "Ho Chi Minh City, Vietnam",
-  linkedin: "https://linkedin.com/in/bach-huy-hoang",
-  github: "https://github.com/bachhuyhoang",
+  linkedin: "https://linkedin.com",
+  github: "https://github.com",
   about: `Aspiring backend engineer with a passion for distributed systems and scalable microservices. Experienced in building production-grade features across the full stack — from integrating AI vision services to architecting independent microservices with strict domain boundaries.\n\nI focus on clean architecture, secure data flows, and system reliability. Currently completing my Bachelor in Information Technology at UWE Bristol, actively seeking backend engineering roles where I can contribute to high-impact systems.`,
 
   primaryLangs: [
@@ -713,7 +655,7 @@ experience: [
       desc: "Full-stack food ordering app with dynamic menu filtering, secure JWT authentication, cart workflows, and automated order confirmation emails.",
       stack: ["Vue.js", "Express.js", "MySQL", "JWT", "PrimeVue"],
       github: "#",
-      live: "#",
+      live: "https://home-delivering-food.vercel.app",
       image: foodDeliveryAppImage,
     },
   ],
@@ -1013,102 +955,16 @@ function Projects() {
 }
 
 // ─── CTA ───
-function ContactModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  const [copiedField, setCopiedField] = useState<"email" | "phone" | null>(null);
-  if (!isOpen) return null;
-
-  const copyText = async (field: "email" | "phone", value: string) => {
-    await navigator.clipboard.writeText(value);
-    setCopiedField(field);
-    window.setTimeout(() => setCopiedField((prev) => (prev === field ? null : prev)), 1200);
-  };
-
-  return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" type="button" onClick={onClose} aria-label="Close contact modal">
-          ×
-        </button>
-        <h3 className="modal-title">Get In Touch</h3>
-        <div className="contact-list">
-          <div className="contact-item contact-item-static">
-            <div className="contact-item-info">
-              <span className="contact-icon">✉</span>
-              <div>
-                <p className="contact-label">Email</p>
-                <p className="contact-value">{DATA.email}</p>
-              </div>
-            </div>
-            <button
-              className={`contact-item-copy ${copiedField === "email" ? "is-copied" : ""}`}
-              type="button"
-              onClick={() => copyText("email", DATA.email)}
-            >
-              {copiedField === "email" ? "Copied" : "Copy"}
-            </button>
-          </div>
-          <div className="contact-item contact-item-static">
-            <div className="contact-item-info">
-              <span className="contact-icon">☎</span>
-              <div>
-                <p className="contact-label">Phone</p>
-                <p className="contact-value">{DATA.phone}</p>
-              </div>
-            </div>
-            <button
-              className={`contact-item-copy ${copiedField === "phone" ? "is-copied" : ""}`}
-              type="button"
-              onClick={() => copyText("phone", DATA.phone)}
-            >
-              {copiedField === "phone" ? "Copied" : "Copy"}
-            </button>
-          </div>
-          <a className="contact-item" href={DATA.linkedin} target="_blank" rel="noreferrer">
-            <div className="contact-item-info">
-              <span className="contact-icon">in</span>
-              <div>
-                <p className="contact-label">LinkedIn</p>
-                <p className="contact-value">linkedin.com/in/bach-huy-hoang</p>
-              </div>
-            </div>
-          </a>
-          <a className="contact-item" href={DATA.github} target="_blank" rel="noreferrer">
-            <div className="contact-item-info">
-              <span className="contact-icon">⌥</span>
-              <div>
-                <p className="contact-label">GitHub</p>
-                <p className="contact-value">github.com/bachhuyhoang</p>
-              </div>
-            </div>
-          </a>
-          <div className="contact-item contact-item-static">
-            <div className="contact-item-info">
-              <span className="contact-icon">⌖</span>
-              <div>
-                <p className="contact-label">Location</p>
-                <p className="contact-value">{DATA.location}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function CTA() {
-  const [modalOpen, setModalOpen] = useState(false);
-
   return (
     <section className="cta" id="contact">
       <Reveal>
         <h2 className="cta-title">Interested In My Work?</h2>
         <p className="cta-sub">Let's build something meaningful together. Open to backend engineering opportunities.</p>
-        <button type="button" className="cta-btn" onClick={() => setModalOpen(true)}>
+        <a href={`mailto:${DATA.email}`} className="cta-btn">
           Get In Touch <span>→</span>
-        </button>
+        </a>
       </Reveal>
-      <ContactModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
     </section>
   );
 }
@@ -1118,6 +974,11 @@ function Footer() {
   return (
     <footer className="footer">
       <p className="footer-copy">© 2025 Bach Huy Hoang — Designed with intention.</p>
+      <div className="footer-links">
+        <a href={`mailto:${DATA.email}`}>Email</a>
+        <a href={DATA.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
+        <a href={DATA.github} target="_blank" rel="noreferrer">GitHub</a>
+      </div>
     </footer>
   );
 }
