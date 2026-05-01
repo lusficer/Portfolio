@@ -8,7 +8,7 @@ import microservicesEcommerceImage from "@/assets/cards/projects/microservices-e
 import foodDeliveryAppImage from "@/assets/cards/projects/food-delivery-app.jpg";
 import profilePortraitImage from "@/assets/profile/profile-portrait.png";
 
-const CV_DOWNLOAD_PATH = "/cv/bach-huy-hoang-cv.pdf";
+const CV_DOWNLOAD_PATH = "/cv/BachHuyHoang_Software_intern.pdf";
 
 /* ═══════════════════════════════════════════════════════════════
    BACH HUY HOANG — Portfolio
