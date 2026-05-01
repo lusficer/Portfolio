@@ -161,6 +161,15 @@ function GlobalStyles() {
         background: var(--accent); color: var(--bg-primary);
         box-shadow: 0 0 30px var(--accent-glow);
       }
+      .mobile-download { display: none; }
+      .mobile-download-btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        width: 100%; padding: 14px 18px; border: 1px solid var(--accent);
+        background: var(--accent); color: var(--bg-primary); text-decoration: none;
+        font-family: var(--font-body); font-size: 0.82rem; font-weight: 700;
+        letter-spacing: 0.1em; text-transform: uppercase;
+        box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+      }
       .hero-photo {
         position: relative; z-index: 2; display: flex;
         justify-content: center; align-items: center;
@@ -496,9 +505,10 @@ function GlobalStyles() {
 
       /* Responsive */
       @media (max-width: 900px) {
-        .hero { grid-template-columns: 1fr; padding: 120px 32px 64px; text-align: center; }
+        .site-shell { padding-bottom: 88px; }
+        .hero { grid-template-columns: 1fr; padding: 112px 24px 56px; text-align: center; min-height: auto; }
         .hero-photo { display: none; }
-        .section { padding: 64px 32px; }
+        .section { padding: 56px 24px; }
         .about-grid { grid-template-columns: 1fr; }
         .about-photo { max-width: 300px; margin: 0 auto; }
         .skills-categories { grid-template-columns: 1fr; }
@@ -507,15 +517,25 @@ function GlobalStyles() {
         .project-card { grid-template-columns: 1fr; }
         .nav { padding: 16px 24px; }
         .nav.scrolled { padding: 12px 24px; }
-        .nav-links { gap: 20px; }
+        .nav-links { gap: 14px; flex-wrap: wrap; justify-content: center; }
+        .nav-links a { font-size: 0.76rem; }
         .cta { padding: 80px 32px; }
         .footer { padding: 24px 32px; flex-direction: column; gap: 16px; }
         .hero-btn { margin: 0 auto; }
+        .mobile-download {
+          display: block; position: fixed; left: 16px; right: 16px; bottom: 14px; z-index: 130;
+        }
       }
       @media (max-width: 600px) {
         .skills-categories { grid-template-columns: 1fr; }
-        .about-stats { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .about-stats { grid-template-columns: 1fr; gap: 12px; }
+        .hero-name { font-size: clamp(2.2rem, 10vw, 3rem); }
+        .hero-role { font-size: 0.8rem; letter-spacing: 0.06em; }
+        .nav { padding: 12px 14px; }
+        .nav.scrolled { padding: 10px 14px; }
+        .nav-links { gap: 10px 14px; }
         .nav-links a { font-size: 0.72rem; }
+        .mobile-download { left: 12px; right: 12px; bottom: 10px; }
       }
     `}</style>
   );
@@ -969,6 +989,16 @@ function CTA() {
   );
 }
 
+function MobileDownload() {
+  return (
+    <div className="mobile-download">
+      <a href={CV_DOWNLOAD_PATH} download="BachHuyHoang_Software_cv.pdf" className="mobile-download-btn">
+        Download CV <span>↓</span>
+      </a>
+    </div>
+  );
+}
+
 // ─── Footer ───
 function Footer() {
   return (
@@ -989,7 +1019,7 @@ export default function Portfolio() {
     <>
       <Fonts />
       <GlobalStyles />
-      <div style={{ background: "var(--bg-primary)", minHeight: "100vh" }}>
+      <div className="site-shell" style={{ background: "var(--bg-primary)", minHeight: "100vh" }}>
         <div className="grain-overlay" />
         <Nav />
         <Hero />
@@ -999,6 +1029,7 @@ export default function Portfolio() {
         <Projects />
         <CTA />
         <Footer />
+        <MobileDownload />
       </div>
     </>
   );
