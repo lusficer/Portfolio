@@ -1,0 +1,187 @@
+.page {
+  min-height: 100vh;
+  background: #16130f;
+  color: #f5f0e8;
+  padding: 48px 20px 72px;
+}
+
+.markdown {
+  max-width: 900px;
+  margin: 0 auto;
+  line-height: 1.8;
+  font-size: 1.02rem;
+}
+
+.markdown :global(h1),
+.markdown :global(h2),
+.markdown :global(h3),
+.markdown :global(h4) {
+  color: #f5f0e8;
+  line-height: 1.25;
+  margin-top: 1.75em;
+  margin-bottom: 0.65em;
+}
+
+.markdown :global(h1) {
+  font-size: clamp(2rem, 3.4vw, 2.7rem);
+  border-bottom: 1px solid #3a342c;
+  padding-bottom: 0.35em;
+}
+
+.markdown :global(h2) {
+  font-size: clamp(1.4rem, 2.7vw, 1.9rem);
+}
+
+.markdown :global(h3) {
+  font-size: 1.2rem;
+  color: #d4bc9a;
+}
+
+.markdown :global(a) {
+  color: #d4bc9a;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.qref {
+  color: #d4bc9a;
+  font-weight: 600;
+}
+
+.markdown :global(p),
+.markdown :global(li) {
+  color: #e6ded3;
+}
+
+.markdown :global(ul),
+.markdown :global(ol) {
+  padding-left: 1.4rem;
+  margin: 0.8rem 0 1.2rem;
+}
+
+.markdown :global(blockquote) {
+  margin: 1rem 0;
+  padding: 0.8rem 1rem;
+  border-left: 3px solid #c4a882;
+  background: rgba(196, 168, 130, 0.08);
+  color: #d9cfbf;
+}
+
+.markdown :global(table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0 1.4rem;
+  font-size: 0.95rem;
+}
+
+.markdown :global(th),
+.markdown :global(td) {
+  border: 1px solid #3a342c;
+  padding: 0.55rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.markdown :global(th) {
+  background: #221f1a;
+  color: #f2ebdf;
+}
+
+.markdown :global(code) {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  background: #221f1a;
+  border: 1px solid #3a342c;
+  border-radius: 4px;
+  padding: 0.1rem 0.35rem;
+  color: #f2ebdf;
+}
+
+.markdown :global(pre) {
+  background: #1f1b17;
+  border: 1px solid #3a342c;
+  border-radius: 8px;
+  overflow: auto;
+  padding: 0.9rem;
+  margin: 1rem 0 1.2rem;
+}
+
+.markdown :global(pre code) {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.markdown :global(pre code.hljs) {
+  color: #dcd7cf;
+}
+
+.markdown :global(.hljs-comment),
+.markdown :global(.hljs-quote) {
+  color: #8d97aa;
+  font-style: italic;
+}
+
+.markdown :global(.hljs-keyword),
+.markdown :global(.hljs-selector-tag),
+.markdown :global(.hljs-literal),
+.markdown :global(.hljs-section),
+.markdown :global(.hljs-link) {
+  color: #c792ea;
+}
+
+.markdown :global(.hljs-string),
+.markdown :global(.hljs-title),
+.markdown :global(.hljs-name),
+.markdown :global(.hljs-type),
+.markdown :global(.hljs-attribute),
+.markdown :global(.hljs-symbol),
+.markdown :global(.hljs-bullet),
+.markdown :global(.hljs-addition),
+.markdown :global(.hljs-template-tag),
+.markdown :global(.hljs-template-variable) {
+  color: #a5e075;
+}
+
+.markdown :global(.hljs-number),
+.markdown :global(.hljs-regexp),
+.markdown :global(.hljs-meta),
+.markdown :global(.hljs-meta .hljs-keyword),
+.markdown :global(.hljs-variable),
+.markdown :global(.hljs-selector-id),
+.markdown :global(.hljs-selector-class),
+.markdown :global(.hljs-title.class_) {
+  color: #f7b267;
+}
+
+.markdown :global(.hljs-built_in),
+.markdown :global(.hljs-doctag),
+.markdown :global(.hljs-function),
+.markdown :global(.hljs-params),
+.markdown :global(.hljs-class),
+.markdown :global(.hljs-tag) {
+  color: #82aaff;
+}
+
+.markdown :global(.hljs-emphasis) {
+  font-style: italic;
+}
+
+.markdown :global(.hljs-strong) {
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .page {
+    padding: 24px 12px 48px;
+  }
+
+  .markdown {
+    font-size: 0.96rem;
+  }
+
+  .markdown :global(table) {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

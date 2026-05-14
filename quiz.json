@@ -1,0 +1,1321 @@
+{
+  "version": 1,
+  "questions": [
+    {
+      "id": "q1",
+      "ref": "Q1",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Bốn tính chất của OOP trong Java là gì?",
+      "options": [
+        "Encapsulation, Inheritance, Polymorphism, Abstraction",
+        "Class, Object, Method, Field",
+        "Encapsulation, Composition, Aggregation, Inheritance",
+        "Static, Final, Abstract, Synchronized"
+      ],
+      "answer": 0,
+      "explanation": "Bốn tính chất OOP: **Encapsulation** (đóng gói dữ liệu qua getter/setter), **Inheritance** (kế thừa bằng `extends`), **Polymorphism** (đa hình — overloading & overriding), **Abstraction** (trừu tượng qua abstract class/interface). Các đáp án khác liệt kê khái niệm OOP nhưng không phải 4 tính chất chính."
+    },
+    {
+      "id": "q2",
+      "ref": "Q2",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Phát biểu nào về Abstract Class và Interface trong Java 8+ là ĐÚNG?",
+      "options": [
+        "Abstract class không thể có field, interface có thể có",
+        "Một class chỉ có thể implements 1 interface tại một thời điểm",
+        "Interface từ Java 8 có thể có default method và static method có thân hàm",
+        "Abstract class không thể có constructor"
+      ],
+      "answer": 2,
+      "explanation": "Từ Java 8, **interface có thể có `default` method và `static` method với thân hàm**, giải quyết bài toán thêm method mới mà không phá vỡ implementation cũ. Sai: abstract class CÓ field và CÓ constructor; một class có thể implements NHIỀU interface."
+    },
+    {
+      "id": "q3",
+      "ref": "Q8",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Khi override `equals()`, tại sao BẮT BUỘC phải override `hashCode()`?",
+      "options": [
+        "Vì Java compiler bắt buộc, không thì lỗi compile",
+        "Để giữ contract: hai object equals nhau PHẢI có cùng hashCode, nếu không HashMap/HashSet sẽ hoạt động sai",
+        "Để tăng hiệu năng khi so sánh object",
+        "Vì `equals()` gọi nội bộ `hashCode()`"
+      ],
+      "answer": 1,
+      "explanation": "**Hợp đồng equals/hashCode**: nếu `a.equals(b) == true` thì `a.hashCode() == b.hashCode()`. Vi phạm sẽ làm `HashMap`, `HashSet` xếp object vào bucket khác nhau → không tìm thấy dù equals đúng. Compiler KHÔNG bắt buộc — đây là lỗi logic runtime."
+    },
+    {
+      "id": "q4",
+      "ref": "Q12",
+      "topic": "Java Core",
+      "type": "short",
+      "difficulty": "hard",
+      "question": "Trong Java 8+, khi một bucket của HashMap có quá nhiều phần tử (≥ 8) thì cấu trúc dữ liệu của bucket đó chuyển thành gì?",
+      "acceptedAnswers": ["red-black tree", "red black tree", "cây đỏ đen", "tree", "treeify"],
+      "explanation": "Từ Java 8, khi số phần tử trong bucket ≥ **TREEIFY_THRESHOLD (8)** và capacity ≥ MIN_TREEIFY_CAPACITY (64), Java treeify bucket đó thành **Red-Black Tree** → giảm worst-case lookup từ O(n) xuống **O(log n)**. Khi số phần tử ≤ UNTREEIFY_THRESHOLD (6) thì quay lại Linked List."
+    },
+    {
+      "id": "q5",
+      "ref": "Q27",
+      "topic": "Spring",
+      "type": "short",
+      "difficulty": "easy",
+      "question": "IoC viết tắt của cụm từ nào trong Spring?",
+      "acceptedAnswers": ["inversion of control", "đảo ngược điều khiển"],
+      "explanation": "**IoC = Inversion of Control** (Đảo ngược điều khiển). Thay vì code tự tạo dependency (`new Service()`), Spring container quản lý lifecycle và inject dependency vào — đảo ngược quyền điều khiển từ code sang framework. **DI (Dependency Injection)** là cách triển khai cụ thể của IoC."
+    },
+    {
+      "id": "q6",
+      "ref": "Q44",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "hard",
+      "question": "Khi method `@Transactional` gọi method `@Transactional` khác TRONG CÙNG class (self-invocation), điều gì xảy ra?",
+      "options": [
+        "Cả hai transaction đều hoạt động bình thường, có propagation",
+        "Transaction thứ hai bị ignore vì proxy không intercept self-invocation",
+        "Spring throw IllegalStateException",
+        "Cả hai method chạy trong cùng 1 transaction lồng"
+      ],
+      "answer": 1,
+      "explanation": "Spring `@Transactional` hoạt động qua **proxy (AOP)**. Khi call từ bên ngoài → đi qua proxy → transaction được áp dụng. Nhưng khi method nội bộ gọi method khác trong CÙNG class bằng `this.xxx()` → bypass proxy → annotation **bị ignore**. Cách khắc phục: tách sang class khác, hoặc inject self, hoặc dùng `AopContext.currentProxy()`."
+    },
+    {
+      "id": "q7",
+      "ref": "Q42",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Đâu là cách KHÔNG hiệu quả để giải quyết N+1 query problem trong JPA?",
+      "options": [
+        "Dùng `JOIN FETCH` trong JPQL",
+        "Dùng `@EntityGraph` trên repository method",
+        "Đổi FetchType từ LAZY sang EAGER cho toàn bộ relationship",
+        "Dùng `@BatchSize` để gom các query lại"
+      ],
+      "answer": 2,
+      "explanation": "Đổi sang **EAGER toàn bộ** giải quyết N+1 nhưng tạo ra vấn đề lớn hơn: luôn load dữ liệu không cần thiết, tăng memory, có thể gây cartesian product. Cách đúng: dùng **JOIN FETCH** / **@EntityGraph** khi cần, hoặc **@BatchSize** để gom query — giữ LAZY làm default và load có chủ đích."
+    },
+    {
+      "id": "q8",
+      "ref": "Q54",
+      "topic": "Git",
+      "type": "short",
+      "difficulty": "easy",
+      "question": "Lệnh Git nào tạo lịch sử commit dạng tuyến tính (linear) hơn là tạo merge commit?",
+      "acceptedAnswers": ["rebase", "git rebase"],
+      "explanation": "**`git rebase`** dời các commit của branch hiện tại lên đầu branch đích → lịch sử thẳng, không có merge commit. **`git merge`** tạo merge commit, giữ nguyên lịch sử rẽ nhánh. Quy tắc: **rebase trên branch local của mình**, **merge vào branch chung** (không bao giờ rebase commit đã push lên shared branch)."
+    },
+    {
+      "id": "q9",
+      "ref": "Q3",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Điểm khác nhau cốt lõi giữa `overloading` và `overriding` là gì?",
+      "options": [
+        "`Overloading` xảy ra ở compile-time, còn `overriding` quyết định ở runtime",
+        "`Overloading` bắt buộc ở class con, còn `overriding` có thể trong cùng class",
+        "`Overloading` không được đổi tham số, còn `overriding` được đổi tự do",
+        "`Overloading` chỉ dùng cho `private` method, còn `overriding` chỉ dùng cho `public` method"
+      ],
+      "answer": 0,
+      "explanation": "**Overloading** là cùng tên method nhưng khác danh sách tham số, được resolve lúc compile-time. **Overriding** là class con ghi đè method class cha cùng chữ ký để tạo đa hình runtime. Vì vậy khi gọi qua reference cha, JVM sẽ chọn implementation con ở runtime."
+    },
+    {
+      "id": "q10",
+      "ref": "Q4",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Tình huống nào thể hiện đúng nguyên lý **DIP** trong SOLID?",
+      "options": [
+        "`NotificationService` tự `new EmailSender()` trong constructor",
+        "`NotificationService` phụ thuộc interface `MessageSender` và nhận implementation qua constructor",
+        "`NotificationService` chỉ dùng `static` method để gửi email",
+        "`NotificationService` gộp luôn logic gửi Email, SMS, Telegram vào một class"
+      ],
+      "answer": 1,
+      "explanation": "**Dependency Inversion Principle** yêu cầu module cấp cao phụ thuộc vào **abstraction**, không phụ thuộc trực tiếp class cụ thể. Khi inject `MessageSender`, bạn có thể thay `EmailSender` bằng `SmsSender` mà không sửa logic nghiệp vụ. Cách này giúp code dễ test và mở rộng."
+    },
+    {
+      "id": "q11",
+      "ref": "Q5",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Phát biểu nào đúng về `primitive` và `reference` type trong Java?",
+      "options": [
+        "`primitive` có thể gán `null`, còn `reference` thì không",
+        "`primitive` lưu trực tiếp giá trị; `reference` lưu địa chỉ object",
+        "`reference` luôn nằm trên stack, không liên quan heap",
+        "`primitive` luôn chậm hơn `reference` vì phải boxing"
+      ],
+      "answer": 1,
+      "explanation": "Với **primitive type** (`int`, `double`, ...), biến chứa trực tiếp giá trị. Với **reference type**, biến chứa tham chiếu tới object trên heap. Vì vậy `reference` có thể là `null`, còn `primitive` thì không."
+    },
+    {
+      "id": "q12",
+      "ref": "Q6",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Lỗi nào thường gắn với Stack và Heap theo đúng bản chất?",
+      "options": [
+        "Stack -> `OutOfMemoryError`, Heap -> `StackOverflowError`",
+        "Stack -> `NullPointerException`, Heap -> `ClassCastException`",
+        "Stack -> `StackOverflowError`, Heap -> `OutOfMemoryError`",
+        "Stack và Heap đều chỉ gây `IOException`"
+      ],
+      "answer": 2,
+      "explanation": "**StackOverflowError** thường xảy ra khi call stack phình quá mức (ví dụ đệ quy vô hạn). **OutOfMemoryError** thường xuất hiện khi heap không còn đủ bộ nhớ cho object mới. Đây là cặp lỗi kinh điển khi phân biệt stack và heap."
+    },
+    {
+      "id": "q13",
+      "ref": "Q7",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Trong xử lý chuỗi nhiều lần trong một thread, lựa chọn nào hợp lý nhất về hiệu năng?",
+      "options": [
+        "Dùng `String` vì immutable nên luôn nhanh nhất",
+        "Dùng `StringBuffer` vì có `synchronized` nên nhanh hơn `StringBuilder`",
+        "Dùng `StringBuilder` vì mutable và ít overhead đồng bộ",
+        "Dùng `char[]` bắt buộc trong mọi trường hợp"
+      ],
+      "answer": 2,
+      "explanation": "Khi nối/chỉnh sửa chuỗi nhiều lần trong bối cảnh single-thread, **`StringBuilder`** thường tối ưu nhất. `String` tạo nhiều object mới vì immutable, còn `StringBuffer` có thêm overhead `synchronized`. Chọn đúng cấu trúc giúp giảm GC pressure."
+    },
+    {
+      "id": "q14",
+      "ref": "Q9",
+      "topic": "Java Core",
+      "type": "short",
+      "difficulty": "easy",
+      "question": "Keyword nào thường dùng để ngăn class bị kế thừa khi thiết kế immutable class?",
+      "acceptedAnswers": ["final"],
+      "explanation": "Một nguyên tắc quan trọng để tạo immutable class là khai báo class với keyword **`final`**. Điều này ngăn subclass override hành vi và phá vỡ tính bất biến. Kết hợp thêm `private final` field và không có setter để đảm bảo object không đổi trạng thái."
+    },
+    {
+      "id": "q15",
+      "ref": "Q10",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Trong Java Collections Framework, nhóm nào KHÔNG kế thừa từ `Collection`?",
+      "options": ["`List`", "`Set`", "`Queue`", "`Map`"],
+      "answer": 3,
+      "explanation": "`List`, `Set`, `Queue` đều nằm dưới nhánh **`Collection`**. Riêng **`Map`** là một hierarchy riêng biệt vì mô hình dữ liệu key-value khác với tập hợp phần tử đơn. Đây là lý do API của `Map` khác đáng kể so với `Collection`."
+    },
+    {
+      "id": "q16",
+      "ref": "Q11",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Use case nào phù hợp hơn với `LinkedList` thay vì `ArrayList`?",
+      "options": [
+        "Cần truy cập ngẫu nhiên `get(i)` rất thường xuyên",
+        "Danh sách chủ yếu thêm/xóa ở đầu hoặc giữa nhiều lần",
+        "Cần footprint bộ nhớ nhỏ nhất có thể",
+        "Cần tối ưu binary search trên index"
+      ],
+      "answer": 1,
+      "explanation": "`LinkedList` mạnh ở thao tác thêm/xóa node khi đã có vị trí, đặc biệt ở đầu danh sách. `ArrayList` lại tối ưu truy cập theo index với độ phức tạp gần **O(1)**. Vì vậy pattern truy cập quyết định cấu trúc dữ liệu phù hợp."
+    },
+    {
+      "id": "q17",
+      "ref": "Q13",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Trong môi trường multi-thread, lựa chọn nào thường cân bằng tốt giữa an toàn và hiệu năng?",
+      "options": ["`HashMap`", "`Hashtable`", "`ConcurrentHashMap`", "`TreeMap`"],
+      "answer": 2,
+      "explanation": "**`ConcurrentHashMap`** được thiết kế cho truy cập đồng thời với mức lock hạt mịn hơn, giúp throughput tốt hơn `Hashtable`. `HashMap` không thread-safe, còn `Hashtable` đồng bộ thô toàn bộ nên dễ nghẽn. Vì vậy `ConcurrentHashMap` là lựa chọn phổ biến cho concurrent workloads."
+    },
+    {
+      "id": "q18",
+      "ref": "Q14",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Khi đang duyệt `ArrayList` bằng for-each, cách nào tránh `ConcurrentModificationException` khi cần xóa phần tử?",
+      "options": [
+        "Gọi `list.remove(item)` trực tiếp trong vòng for-each",
+        "Dùng `Iterator` và gọi `iterator.remove()`",
+        "Bọc trong `try/catch` rồi bỏ qua exception",
+        "Đổi sang `HashSet` là tự hết lỗi"
+      ],
+      "answer": 1,
+      "explanation": "Với iterator fail-fast, sửa collection trực tiếp trong for-each sẽ dễ gây **`ConcurrentModificationException`**. Cách đúng là dùng `Iterator` và gọi **`iterator.remove()`** để cập nhật trạng thái nội bộ an toàn. Đây là kỹ thuật chuẩn khi vừa duyệt vừa xóa."
+    },
+    {
+      "id": "q19",
+      "ref": "Q15",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Trong hệ thống exception Java, nhóm nào **không bắt buộc** phải xử lý tại compile-time?",
+      "options": [
+        "Checked Exception (ví dụ `IOException`)",
+        "RuntimeException (Unchecked)",
+        "Cả Checked và Runtime đều bắt buộc",
+        "`Throwable` nói chung đều bắt buộc"
+      ],
+      "answer": 1,
+      "explanation": "**Unchecked exception** (kế thừa `RuntimeException`) không bị compiler ép `try/catch` hoặc `throws`. Ngược lại, checked exception như `IOException`, `SQLException` phải được khai báo hoặc xử lý. Điều này giúp phân biệt lỗi nghiệp vụ/runtime với lỗi có thể dự đoán trước."
+    },
+    {
+      "id": "q20",
+      "ref": "Q16",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Phát biểu nào đúng về `throw` và `throws`?",
+      "options": [
+        "`throw` dùng để khai báo exception ở chữ ký method",
+        "`throws` dùng để ném một exception object tại runtime",
+        "`throw` ném exception cụ thể, còn `throws` khai báo khả năng method có thể ném exception",
+        "Hai keyword này tương đương nhau"
+      ],
+      "answer": 2,
+      "explanation": "`throw` đi kèm một đối tượng exception cụ thể tại vị trí code thực thi. `throws` đặt ở method signature để thông báo cho caller rằng method có thể phát sinh exception. Hiểu đúng cặp này giúp thiết kế API exception rõ ràng hơn."
+    },
+    {
+      "id": "q21",
+      "ref": "Q16",
+      "topic": "Java Core",
+      "type": "short",
+      "difficulty": "easy",
+      "question": "Keyword nào là block luôn chạy sau `try/catch` để dọn dẹp resource?",
+      "acceptedAnswers": ["finally"],
+      "explanation": "Block **`finally`** gần như luôn được thực thi sau `try/catch`, nên thường dùng để đóng resource hoặc cleanup. Đây là lý do `finally` xuất hiện nhiều trong code Java trước khi `try-with-resources` phổ biến."
+    },
+    {
+      "id": "q22",
+      "ref": "Q17",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Mục tiêu chính của `try-with-resources` là gì?",
+      "options": [
+        "Tự động retry khi exception xảy ra",
+        "Tự động đóng resource implement `AutoCloseable`",
+        "Biến checked exception thành unchecked",
+        "Tăng tốc độ đọc file bằng đa luồng"
+      ],
+      "answer": 1,
+      "explanation": "`try-with-resources` tự động gọi `close()` cho resource implement **`AutoCloseable`** sau khi block kết thúc. Cách này giảm rò rỉ tài nguyên và làm code ngắn, rõ hơn so với đóng thủ công trong `finally`."
+    },
+    {
+      "id": "q23",
+      "ref": "Q18",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Interface nào sau đây là functional interface hợp lệ?",
+      "options": [
+        "Interface có 2 abstract methods bất kỳ",
+        "Interface có đúng 1 abstract method (có thể thêm default/static methods)",
+        "Interface không có method nào",
+        "Interface chỉ chứa `static final` field"
+      ],
+      "answer": 1,
+      "explanation": "Functional interface cần **đúng 1 abstract method**, nhờ đó lambda có thể ánh xạ trực tiếp vào method này. Interface vẫn có thể chứa `default`/`static` methods mà không phá vỡ điều kiện functional."
+    },
+    {
+      "id": "q24",
+      "ref": "Q19",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Trong Stream API, operation nào là **terminal operation**?",
+      "options": ["`filter`", "`map`", "`sorted`", "`collect`"],
+      "answer": 3,
+      "explanation": "`filter`, `map`, `sorted` là intermediate operations (lazy), chỉ xây pipeline. **`collect`** là terminal operation, khi gọi nó pipeline mới thực sự chạy. Phân biệt hai nhóm này giúp hiểu vì sao stream chỉ execute khi có terminal."
+    },
+    {
+      "id": "q25",
+      "ref": "Q20",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "`Optional` được dùng chủ yếu để giải quyết vấn đề nào?",
+      "options": [
+        "Tăng tốc độ truy vấn database",
+        "Tránh `NullPointerException` bằng cách biểu diễn giá trị có thể vắng mặt",
+        "Thay thế hoàn toàn mọi `if/else`",
+        "Bắt buộc dùng cho tất cả field trong entity"
+      ],
+      "answer": 1,
+      "explanation": "**`Optional`** là container cho giá trị có thể có hoặc không có, giúp xử lý null an toàn hơn qua `map`, `orElse`, `orElseThrow`. Nó không phải thuốc chữa mọi vấn đề, nhưng rất hữu ích ở API return type."
+    },
+    {
+      "id": "q26",
+      "ref": "Q21",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Cách nào sau đây phù hợp hơn cho production khi tạo và quản lý nhiều tác vụ bất đồng bộ?",
+      "options": [
+        "Luôn `new Thread()` cho từng request",
+        "Dùng `ExecutorService` với thread pool",
+        "Chỉ dùng `Runnable` và không cần executor",
+        "Dùng `Thread.sleep()` để điều phối thread"
+      ],
+      "answer": 1,
+      "explanation": "`ExecutorService` tái sử dụng thread, giới hạn tài nguyên tốt hơn và hỗ trợ queue/rejection policy. Việc `new Thread()` liên tục gây overhead tạo/hủy thread và khó kiểm soát khi tải cao."
+    },
+    {
+      "id": "q27",
+      "ref": "Q22",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Đâu là chiến lược hiệu quả để giảm nguy cơ deadlock?",
+      "options": [
+        "Lock ngẫu nhiên theo thứ tự runtime",
+        "Giữ lock càng lâu càng tốt để tránh tranh chấp",
+        "Luôn lock theo thứ tự nhất quán giữa các thread",
+        "Bắt mọi exception rồi tiếp tục chạy"
+      ],
+      "answer": 2,
+      "explanation": "Deadlock thường xuất hiện khi nhiều thread chờ lock chéo nhau. Một kỹ thuật thực tế là áp dụng **thứ tự lock nhất quán** để loại bỏ circular wait. Có thể kết hợp `tryLock(timeout)` để tránh chờ vô hạn."
+    },
+    {
+      "id": "q28",
+      "ref": "Q23",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "hard",
+      "question": "Phát biểu nào đúng nhất về `volatile` và `AtomicInteger`?",
+      "options": [
+        "`volatile` đảm bảo cả visibility và atomicity cho mọi phép toán",
+        "`AtomicInteger` không thread-safe, chỉ tiện cú pháp",
+        "`volatile` chủ yếu đảm bảo visibility; `AtomicInteger` dùng CAS để đảm bảo cập nhật nguyên tử",
+        "`volatile` và `AtomicInteger` tương đương, dùng cái nào cũng như nhau"
+      ],
+      "answer": 2,
+      "explanation": "`volatile` đảm bảo thread thấy giá trị mới nhất, nhưng các phép như `count++` vẫn không nguyên tử. **`AtomicInteger`** dùng cơ chế CAS (`compareAndSet`) để đảm bảo cập nhật an toàn trong môi trường concurrent. Đây là khác biệt cốt lõi giữa visibility và atomicity."
+    },
+    {
+      "id": "q29",
+      "ref": "Q24",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Vì sao `ThreadPoolExecutor` thường được ưu tiên hơn việc tạo thread mới liên tục?",
+      "options": [
+        "Vì thread pool luôn dùng ít RAM hơn trong mọi trường hợp",
+        "Vì thread pool tái sử dụng thread, giảm overhead tạo/hủy và kiểm soát queue/rejection tốt hơn",
+        "Vì thread pool loại bỏ hoàn toàn deadlock",
+        "Vì thread pool tự động biến code thành non-blocking"
+      ],
+      "answer": 1,
+      "explanation": "Thread pool giúp **tái sử dụng thread**, tránh chi phí tạo/hủy liên tục khi tải cao. Ngoài ra, bạn còn kiểm soát được queue size, max pool size và rejection policy để hệ thống ổn định hơn. Đây là điểm quan trọng trong môi trường production."
+    },
+    {
+      "id": "q30",
+      "ref": "Q25",
+      "topic": "Java Core",
+      "type": "short",
+      "difficulty": "medium",
+      "question": "Nguyên tắc viết tắt nào mô tả wildcard cho Generics: đọc thì `extends`, ghi thì `super`?",
+      "acceptedAnswers": ["pecs", "producer extends consumer super"],
+      "explanation": "**PECS** = **Producer Extends, Consumer Super**. Nếu dữ liệu được đọc ra từ collection (producer) thì dùng `? extends T`. Nếu cần ghi vào collection (consumer) thì dùng `? super T` để an toàn kiểu."
+    },
+    {
+      "id": "q31",
+      "ref": "Q26",
+      "topic": "Java Core",
+      "type": "mcq",
+      "difficulty": "hard",
+      "question": "Hệ quả đúng của **Type Erasure** trong Java Generics là gì?",
+      "options": [
+        "Runtime vẫn phân biệt rõ `List<String>` và `List<Integer>` bằng kiểu generic đầy đủ",
+        "Có thể dùng trực tiếp `T.class` và `new T()` trong generic class",
+        "Thông tin generic bị xóa ở runtime, nên không thể `instanceof T` hay tạo `new T[10]` trực tiếp",
+        "Type erasure chỉ áp dụng cho primitive, không áp dụng object"
+      ],
+      "answer": 2,
+      "explanation": "Do **type erasure**, generic chủ yếu kiểm tra ở compile-time; đến runtime, thông tin type parameter bị xóa hoặc thay bằng bound. Vì vậy các thao tác như `new T()` hay `T.class` không hợp lệ trực tiếp. Đây là lý do nhiều API generic cần truyền thêm `Class<T>`."
+    },
+    {
+      "id": "q32",
+      "ref": "Q28",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Scope mặc định của Spring Bean là gì?",
+      "options": ["`prototype`", "`request`", "`singleton`", "`session`"],
+      "answer": 2,
+      "explanation": "Trong Spring container, scope mặc định là **`singleton`**: một bean instance cho toàn bộ container. `prototype`, `request`, `session` chỉ dùng khi có nhu cầu vòng đời khác."
+    },
+    {
+      "id": "q33",
+      "ref": "Q29",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Method gắn `@PostConstruct` được gọi ở giai đoạn nào của bean lifecycle?",
+      "options": [
+        "Trước khi dependency injection diễn ra",
+        "Sau khi dependency injection hoàn tất và trước khi bean sẵn sàng dùng",
+        "Chỉ khi container shutdown",
+        "Sau mỗi HTTP request"
+      ],
+      "answer": 1,
+      "explanation": "`@PostConstruct` chạy sau khi bean được tạo và dependency đã được inject đầy đủ. Đây là nơi phù hợp để init tài nguyên ban đầu. Cleanup tương ứng thường đặt trong `@PreDestroy`."
+    },
+    {
+      "id": "q34",
+      "ref": "Q30",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Annotation nào có hành vi đặc biệt là dịch (`translate`) exception tầng persistence của Spring?",
+      "options": ["`@Service`", "`@Component`", "`@Repository`", "`@Controller`"],
+      "answer": 2,
+      "explanation": "**`@Repository`** không chỉ là stereotype annotation mà còn kích hoạt cơ chế translate exception từ provider (JPA/JDBC) sang `DataAccessException` của Spring. Nhờ đó xử lý lỗi data access nhất quán hơn."
+    },
+    {
+      "id": "q35",
+      "ref": "Q31",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Khi có nhiều bean cùng type, cách nào chọn bean mặc định để inject mà không cần `@Qualifier` ở mọi nơi?",
+      "options": [
+        "Đặt bean đó với tên class ngắn hơn",
+        "Đánh dấu bean bằng `@Primary`",
+        "Dùng `@Autowired(required=false)`",
+        "Đổi scope bean sang `prototype`"
+      ],
+      "answer": 1,
+      "explanation": "Khi nhiều bean cùng type, **`@Primary`** đánh dấu bean ưu tiên mặc định cho autowiring. Nếu cần chọn cụ thể bean khác ở từng điểm inject, dùng thêm `@Qualifier`."
+    },
+    {
+      "id": "q36",
+      "ref": "Q32",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Điểm khác biệt nổi bật của Spring Boot so với Spring Framework thuần là gì?",
+      "options": [
+        "Spring Boot không dùng được Spring MVC",
+        "Spring Boot cung cấp auto-configuration, starter dependencies và embedded server",
+        "Spring Boot bắt buộc cấu hình XML toàn bộ",
+        "Spring Boot chỉ dùng cho microservices, không dùng cho monolith"
+      ],
+      "answer": 1,
+      "explanation": "Spring Boot xây trên Spring Framework và bổ sung **auto-configuration**, **starter dependencies** cùng **embedded server** (Tomcat/Jetty/Undertow). Nhờ đó thời gian bootstrap dự án giảm đáng kể."
+    },
+    {
+      "id": "q37",
+      "ref": "Q33",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "hard",
+      "question": "Trong Auto-Configuration, annotation nào thường dùng để chỉ apply config khi người dùng CHƯA tự định nghĩa bean?",
+      "options": [
+        "`@ConditionalOnClass`",
+        "`@ConditionalOnProperty`",
+        "`@ConditionalOnMissingBean`",
+        "`@Profile`"
+      ],
+      "answer": 2,
+      "explanation": "**`@ConditionalOnMissingBean`** giúp Spring Boot tạo cấu hình mặc định nhưng tôn trọng custom bean của người dùng. Đây là cơ chế cốt lõi làm Boot vừa tiện lợi vừa dễ override."
+    },
+    {
+      "id": "q38",
+      "ref": "Q34",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Mục đích chính của Spring Profiles là gì?",
+      "options": [
+        "Tăng tốc JVM startup",
+        "Quản lý cấu hình theo môi trường như dev/test/prod",
+        "Tự động chuyển SQL sang NoSQL",
+        "Thay thế hoàn toàn `application.yml`"
+      ],
+      "answer": 1,
+      "explanation": "**Profiles** cho phép tách config theo môi trường (`application-dev.yml`, `application-prod.yml`) để tránh hard-code và giảm sai sót khi deploy. Có thể kích hoạt qua `--spring.profiles.active=...`."
+    },
+    {
+      "id": "q39",
+      "ref": "Q35",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Spring Boot Actuator thường được dùng để làm gì trong production?",
+      "options": [
+        "Tạo entity JPA tự động từ database schema",
+        "Cung cấp endpoint giám sát như `health`, `metrics`, `info`",
+        "Thay thế hoàn toàn logging framework",
+        "Mã hóa password mặc định bằng BCrypt"
+      ],
+      "answer": 1,
+      "explanation": "**Actuator** cung cấp các endpoint production-ready như ` /actuator/health`, ` /actuator/metrics`, ` /actuator/info`. Đây là nền tảng để monitor service health, performance và vận hành hệ thống ổn định hơn."
+    },
+    {
+      "id": "q40",
+      "ref": "Q36",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Trong Spring MVC, thành phần nào đóng vai trò **Front Controller** nhận mọi request đầu vào?",
+      "options": [
+        "`HandlerAdapter`",
+        "`DispatcherServlet`",
+        "`ViewResolver`",
+        "`ResponseEntityExceptionHandler`"
+      ],
+      "answer": 1,
+      "explanation": "**`DispatcherServlet`** là trung tâm request lifecycle trong Spring MVC. Nó nhận request, tìm handler qua `HandlerMapping`, gọi controller qua `HandlerAdapter`, rồi trả response về client."
+    },
+    {
+      "id": "q41",
+      "ref": "Q37",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Annotation nào dùng để bind JSON body của request vào object Java trong REST Controller?",
+      "options": [
+        "`@PathVariable`",
+        "`@RequestParam`",
+        "`@RequestBody`",
+        "`@RequestHeader`"
+      ],
+      "answer": 2,
+      "explanation": "**`@RequestBody`** yêu cầu Spring parse payload (thường là JSON) và map vào DTO/object Java. `@PathVariable` và `@RequestParam` lấy dữ liệu từ URL path/query, không phải body."
+    },
+    {
+      "id": "q42",
+      "ref": "Q38",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Cách khuyến nghị để xử lý exception tập trung cho toàn bộ REST API trong Spring là gì?",
+      "options": [
+        "Dùng `try/catch` trong mọi controller method",
+        "Dùng `@RestControllerAdvice` + `@ExceptionHandler`",
+        "Chỉ ném `RuntimeException` và không bắt",
+        "Dùng `@ResponseBody` cho mọi exception class"
+      ],
+      "answer": 1,
+      "explanation": "**`@RestControllerAdvice`** kết hợp `@ExceptionHandler` cho phép gom xử lý lỗi về một chỗ, trả response nhất quán theo HTTP status. Cách này giảm lặp code và giúp contract lỗi rõ ràng hơn."
+    },
+    {
+      "id": "q43",
+      "ref": "Q39",
+      "topic": "Spring",
+      "type": "short",
+      "difficulty": "easy",
+      "question": "Annotation nào kích hoạt validation cho tham số `@RequestBody` trong controller Spring?",
+      "acceptedAnswers": ["@valid", "valid"],
+      "explanation": "Trong Spring MVC, bạn đặt **`@Valid`** trước DTO ở `@RequestBody` để kích hoạt Bean Validation (`@NotBlank`, `@Email`, `@Min`...). Khi dữ liệu sai, Spring sẽ ném `MethodArgumentNotValidException` để xử lý ở global handler."
+    },
+    {
+      "id": "q44",
+      "ref": "Q40",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Quan hệ đúng giữa JPA, Hibernate và Spring Data JPA là gì?",
+      "options": [
+        "Hibernate là specification, JPA là implementation",
+        "Spring Data JPA thay thế hoàn toàn JPA và không cần Hibernate",
+        "JPA là spec, Hibernate là implementation phổ biến, Spring Data JPA là abstraction trên JPA",
+        "JPA chỉ dùng cho NoSQL, Hibernate dùng cho SQL"
+      ],
+      "answer": 2,
+      "explanation": "**JPA** là specification ORM; **Hibernate** là implementation phổ biến của spec này. **Spring Data JPA** nằm phía trên để giảm boilerplate repository và cung cấp query abstraction tiện dụng."
+    },
+    {
+      "id": "q45",
+      "ref": "Q41",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Trong JPA mapping, annotation nào dùng để chỉ cột khóa ngoại cho quan hệ `@ManyToOne`?",
+      "options": [
+        "`@JoinColumn`",
+        "`@Column`",
+        "`@GeneratedValue`",
+        "`@MappedSuperclass`"
+      ],
+      "answer": 0,
+      "explanation": "Với quan hệ như `@ManyToOne`, annotation **`@JoinColumn`** xác định cột FK trong bảng hiện tại. `@Column` chỉ mô tả cột thường, không đủ để mô tả association mapping."
+    },
+    {
+      "id": "q46",
+      "ref": "Q43",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "hard",
+      "question": "Ưu điểm quan trọng của Derived Query Methods trong Spring Data JPA là gì?",
+      "options": [
+        "Tự sinh query từ tên method, giảm boilerplate cho truy vấn phổ biến",
+        "Luôn nhanh hơn native SQL trong mọi trường hợp",
+        "Không cần entity mapping vẫn chạy được",
+        "Tự động tránh hoàn toàn N+1 query problem"
+      ],
+      "answer": 0,
+      "explanation": "Derived query methods như `findByEmail`, `countByStatus`, `existsBy...` giúp tạo truy vấn nhanh theo convention, giảm code lặp. Tuy nhiên chúng không thay thế mọi bài toán tối ưu; trường hợp phức tạp vẫn cần JPQL/native query phù hợp."
+    },
+    {
+      "id": "q47",
+      "ref": "Q45",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Phân biệt đúng giữa Authentication và Authorization trong Spring Security là gì?",
+      "options": [
+        "Authentication = phân quyền, Authorization = đăng nhập",
+        "Authentication = xác thực danh tính; Authorization = kiểm tra quyền truy cập",
+        "Cả hai là một, chỉ khác tên gọi",
+        "Authorization xảy ra trước Authentication"
+      ],
+      "answer": 1,
+      "explanation": "**Authentication** trả lời câu hỏi “bạn là ai?” (xác thực danh tính). **Authorization** trả lời câu hỏi “bạn được làm gì?” (role/permission). Hai bước này thường đi cùng nhau nhưng mục tiêu khác nhau."
+    },
+    {
+      "id": "q48",
+      "ref": "Q46",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "hard",
+      "question": "Trong JWT flow với Spring Security, vai trò chính của `JwtAuthFilter` là gì?",
+      "options": [
+        "Tạo mới user trong database mỗi request",
+        "Validate token từ header `Authorization` và set `Authentication` vào `SecurityContext` nếu hợp lệ",
+        "Tự động refresh token mỗi lần gọi API mà không cần policy",
+        "Mã hóa mật khẩu bằng BCrypt trước khi lưu"
+      ],
+      "answer": 1,
+      "explanation": "`JwtAuthFilter` thường đọc header `Authorization: Bearer <token>`, kiểm tra chữ ký/hạn dùng/token claims, rồi set thông tin xác thực vào **`SecurityContext`**. Sau đó request mới tiếp tục qua controller với context bảo mật hợp lệ."
+    },
+    {
+      "id": "q49",
+      "ref": "Q47",
+      "topic": "J2EE",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Trong Servlet lifecycle, method nào chỉ được gọi **một lần** khi servlet được khởi tạo?",
+      "options": ["`service()`", "`doGet()`", "`init()`", "`destroy()`"],
+      "answer": 2,
+      "explanation": "Servlet container gọi **`init()`** một lần để khởi tạo resource. Sau đó mỗi request đi qua `service()` (và dispatch đến `doGet`/`doPost`). `destroy()` chỉ chạy khi servlet bị hủy."
+    },
+    {
+      "id": "q50",
+      "ref": "Q48",
+      "topic": "J2EE",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Khác biệt đúng giữa Servlet Filter và Spring Interceptor là gì?",
+      "options": [
+        "Filter chỉ chạy với request vào Controller, Interceptor chạy mọi request",
+        "Filter thuộc Servlet spec và có thể áp dụng cả static resource; Interceptor thuộc Spring MVC, chủ yếu cho request vào Controller",
+        "Interceptor chạy trước web server nên nhanh hơn mọi Filter",
+        "Cả hai hoàn toàn tương đương, chỉ khác tên interface"
+      ],
+      "answer": 1,
+      "explanation": "**Servlet Filter** ở tầng servlet container nên có thể chặn/xử lý cả static resources. **Spring Interceptor** nằm trong Spring MVC flow, thường dành cho request vào controller. Vì vậy phạm vi áp dụng của hai cơ chế khác nhau."
+    },
+    {
+      "id": "q51",
+      "ref": "Q49",
+      "topic": "J2EE",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Trong JSP, cú pháp `${user.name}` thuộc thành phần nào?",
+      "options": ["JSTL", "Servlet API", "EL (Expression Language)", "Java Reflection"],
+      "answer": 2,
+      "explanation": "Cú pháp `${...}` là của **EL (Expression Language)** để truy cập dữ liệu mà không cần viết Java scriptlet trực tiếp trong JSP. JSTL là thư viện tag như `c:forEach`, `c:if`."
+    },
+    {
+      "id": "q52",
+      "ref": "Q50",
+      "topic": "J2EE",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Mệnh đề nào đúng khi so sánh Session và Cookie?",
+      "options": [
+        "Session lưu ở client, Cookie lưu ở server",
+        "Cookie thường dung lượng nhỏ và lưu ở browser; Session lưu state phía server",
+        "Session luôn an toàn tuyệt đối, Cookie luôn không an toàn",
+        "Cookie không thể set thời gian hết hạn"
+      ],
+      "answer": 1,
+      "explanation": "**Cookie** được lưu ở phía client (browser), thường giới hạn nhỏ (~4KB) và có thể cấu hình `HttpOnly`, `Secure`, `Max-Age`. **Session** lưu state phía server, thường dùng cho auth state và dữ liệu phiên."
+    },
+    {
+      "id": "q53",
+      "ref": "Q51",
+      "topic": "J2EE",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Lợi ích chính của Connection Pooling trong JDBC là gì?",
+      "options": [
+        "Mã hóa tự động toàn bộ query SQL",
+        "Tái sử dụng connection để giảm overhead tạo/kết nối DB liên tục",
+        "Loại bỏ hoàn toàn khả năng deadlock trong database",
+        "Tự động chuyển JDBC code sang JPA"
+      ],
+      "answer": 1,
+      "explanation": "Tạo mới kết nối DB cho mỗi request rất tốn chi phí. **Connection pool** giữ sẵn các connection để borrow/return nhanh, giúp tăng throughput và giảm latency. HikariCP là lựa chọn phổ biến trong Spring Boot."
+    },
+    {
+      "id": "q54",
+      "ref": "Q52",
+      "topic": "J2EE",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Trong JMS, mô hình nào phù hợp khi **một message cần đến nhiều consumer**?",
+      "options": [
+        "Point-to-Point (Queue)",
+        "Publish/Subscribe (Topic)",
+        "Single Consumer Mode",
+        "Synchronous Request-Response bắt buộc"
+      ],
+      "answer": 1,
+      "explanation": "Với **Publish/Subscribe (Topic)**, một message có thể được nhiều subscriber nhận. Ngược lại, mô hình Queue (Point-to-Point) thường được xử lý bởi một consumer cho mỗi message."
+    },
+    {
+      "id": "q55",
+      "ref": "Q53",
+      "topic": "Git",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Lệnh nào chỉ tải metadata/commit mới từ remote về local mà **không merge** vào branch hiện tại?",
+      "options": ["`git pull`", "`git fetch`", "`git rebase`", "`git commit --amend`"],
+      "answer": 1,
+      "explanation": "**`git fetch`** chỉ đồng bộ dữ liệu từ remote về local refs, không chạm vào working branch. `git pull` = fetch + merge (hoặc rebase tùy config)."
+    },
+    {
+      "id": "q56",
+      "ref": "Q55",
+      "topic": "Git",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Theo Git Flow, branch nào thường được dùng để chuẩn bị bản release trước khi merge về `main`?",
+      "options": ["`feature/*`", "`hotfix/*`", "`release/*`", "`bugfix/*`"],
+      "answer": 2,
+      "explanation": "Trong Git Flow, `release/*` dùng để chốt version, fix nhẹ và chuẩn bị phát hành. Sau đó branch này thường được merge vào `main` (và back-merge vào `develop`)."
+    },
+    {
+      "id": "q57",
+      "ref": "Q56",
+      "topic": "Git",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Khi gặp merge conflict, bước xử lý nào đúng thứ tự nhất?",
+      "options": [
+        "Xóa branch ngay, tạo branch mới và pull lại",
+        "Sửa file conflict -> xóa marker -> `git add` file đã resolve -> commit/continue merge",
+        "Chạy `git reset --hard` để Git tự resolve",
+        "Commit trước rồi mới sửa marker conflict"
+      ],
+      "answer": 1,
+      "explanation": "Conflict cần được resolve thủ công trên file: chọn nội dung đúng, xóa marker `<<<<<<< ======= >>>>>>>`, rồi `git add` và hoàn tất merge (`git commit` hoặc `git merge --continue`)."
+    },
+    {
+      "id": "q58",
+      "ref": "Q57",
+      "topic": "Git",
+      "type": "mcq",
+      "difficulty": "hard",
+      "question": "Lệnh nào giúp lấy **một commit cụ thể** từ branch khác sang branch hiện tại?",
+      "options": ["`git squash`", "`git cherry-pick <sha>`", "`git stash apply`", "`git revert --no-commit`"],
+      "answer": 1,
+      "explanation": "**`git cherry-pick <sha>`** áp dụng thay đổi của một commit cụ thể lên branch hiện tại. Đây là cách hữu ích khi chỉ muốn lấy 1 fix nhỏ thay vì merge cả branch."
+    },
+    {
+      "id": "q59",
+      "ref": "Q58",
+      "topic": "Architecture",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Trade-off nào mô tả đúng nhất giữa Monolith và Microservices?",
+      "options": [
+        "Monolith luôn scale tốt hơn microservices vì chỉ có 1 codebase",
+        "Microservices giảm độ phức tạp vận hành vì có nhiều service nhỏ",
+        "Monolith đơn giản để bắt đầu; microservices linh hoạt scale/deploy độc lập nhưng tăng độ phức tạp distributed",
+        "Hai mô hình gần như giống nhau, chỉ khác cách đặt tên project"
+      ],
+      "answer": 2,
+      "explanation": "**Monolith** thường dễ build và vận hành giai đoạn đầu. **Microservices** cho phép scale/deploy theo từng domain, nhưng kéo theo chi phí về network, observability, data consistency và vận hành distributed system."
+    },
+    {
+      "id": "q60",
+      "ref": "Q59",
+      "topic": "Architecture",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Trong kiến trúc microservices, thành phần nào giúp service tìm địa chỉ của nhau khi scale động?",
+      "options": [
+        "Config Server",
+        "Service Discovery / Registry",
+        "API Documentation Server",
+        "CDN"
+      ],
+      "answer": 1,
+      "explanation": "**Service Discovery/Registry** (ví dụ Eureka, Consul) giúp các service đăng ký và tra cứu instance đang sống. Khi instance tăng/giảm, client vẫn định tuyến đúng mà không hard-code host."
+    },
+    {
+      "id": "q61",
+      "ref": "Q60",
+      "topic": "Architecture",
+      "type": "mcq",
+      "difficulty": "hard",
+      "question": "Khi nào nên ưu tiên giao tiếp async qua message broker thay vì gọi REST đồng bộ giữa 2 service?",
+      "options": [
+        "Khi cần phản hồi tức thì cho user trong cùng request",
+        "Khi nghiệp vụ chấp nhận eventual consistency và cần giảm coupling/thử lại linh hoạt",
+        "Khi payload nhỏ dưới 1KB",
+        "Khi chỉ có đúng 1 consumer duy nhất"
+      ],
+      "answer": 1,
+      "explanation": "Async messaging phù hợp khi không bắt buộc trả kết quả ngay, cần **retry**, **buffer**, giảm phụ thuộc thời gian thực giữa service. REST sync vẫn hợp lý cho luồng cần response trực tiếp trong request hiện tại."
+    },
+    {
+      "id": "q62",
+      "ref": "Q61",
+      "topic": "Architecture",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Circuit Breaker chuyển sang trạng thái `OPEN` trong trường hợp nào?",
+      "options": [
+        "Ngay khi có 1 request timeout đầu tiên",
+        "Khi tỷ lệ lỗi vượt ngưỡng cấu hình trong cửa sổ quan sát",
+        "Khi CPU service vượt 80%",
+        "Khi service trả HTTP 200 quá nhiều"
+      ],
+      "answer": 1,
+      "explanation": "Circuit Breaker theo dõi lỗi theo window; khi vượt threshold thì chuyển **`OPEN`** để fail-fast, tránh dồn tải vào downstream đang lỗi. Sau thời gian chờ sẽ thử lại ở `HALF_OPEN`."
+    },
+    {
+      "id": "q63",
+      "ref": "Q62",
+      "topic": "Architecture",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Thứ tự layer phổ biến trong kiến trúc phân tầng backend Java là gì?",
+      "options": [
+        "Repository -> Controller -> Service -> DB",
+        "Controller -> Service -> Repository -> Database",
+        "Service -> Controller -> Database -> Repository",
+        "Controller -> Repository -> Service -> Database"
+      ],
+      "answer": 1,
+      "explanation": "Flow phổ biến: **Controller** nhận request, gọi **Service** xử lý nghiệp vụ, rồi qua **Repository** để truy cập **Database**. Cách tách tầng này giúp code dễ test và dễ bảo trì."
+    },
+    {
+      "id": "q64",
+      "ref": "Q63",
+      "topic": "Architecture",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Mục đích chính của DTO (Data Transfer Object) là gì?",
+      "options": [
+        "Thay thế hoàn toàn Entity trong tầng persistence",
+        "Mang dữ liệu giữa các tầng/API với payload phù hợp, tránh lộ trực tiếp Entity",
+        "Tăng tốc query SQL bằng index tự động",
+        "Đảm bảo transaction luôn ACID"
+      ],
+      "answer": 1,
+      "explanation": "**DTO** giúp kiểm soát dữ liệu trao đổi (request/response), tránh expose field nhạy cảm hoặc quan hệ phức tạp của Entity, đồng thời ổn định contract API."
+    },
+    {
+      "id": "q65",
+      "ref": "Q64",
+      "topic": "Architecture",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Đâu là REST best practice hợp lý nhất cho endpoint lấy thông tin user theo id?",
+      "options": [
+        "`GET /getUser?id=123` luôn trả `200` kể cả không tìm thấy",
+        "`POST /users/123` để lấy dữ liệu vì POST linh hoạt hơn",
+        "`GET /users/123` và trả `404` khi không tồn tại",
+        "`GET /users?id=123` bắt buộc luôn đúng chuẩn hơn mọi trường hợp"
+      ],
+      "answer": 2,
+      "explanation": "Theo REST convention, resource nên là danh từ và định danh qua path: **`GET /users/{id}`**. Nếu không có resource thì trả **`404 Not Found`** thay vì `200` với dữ liệu rỗng gây mơ hồ."
+    },
+    {
+      "id": "q66",
+      "ref": "Q65",
+      "topic": "Architecture",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Trong Spring Data, cách nào phù hợp để phân trang + sắp xếp API danh sách?",
+      "options": [
+        "Load toàn bộ data vào memory rồi cắt list thủ công",
+        "Dùng `Pageable`/`PageRequest` và truyền `Sort` vào repository query",
+        "Dùng `@Transactional(readOnly=false)` để DB tự phân trang",
+        "Chỉ dùng `LIMIT` hard-code trong mọi query native"
+      ],
+      "answer": 1,
+      "explanation": "Spring Data hỗ trợ sẵn **`Pageable`**, **`PageRequest`**, **`Sort`** để pagination/sorting nhất quán và tái sử dụng tốt ở repository layer, tránh cắt list thủ công tốn memory."
+    },
+    {
+      "id": "q67",
+      "ref": "Q66",
+      "topic": "Design Patterns",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Cách triển khai Singleton an toàn và gọn trong Java hiện đại là gì?",
+      "options": [
+        "Dùng `public static` field mutable",
+        "Dùng `enum` singleton",
+        "Dùng constructor public và static factory",
+        "Dùng `ThreadLocal` để mỗi thread có một instance"
+      ],
+      "answer": 1,
+      "explanation": "**Enum Singleton** là cách ngắn gọn, thread-safe, và chống được vấn đề serialization/reflection tốt trong đa số trường hợp. Đây là cách thường được khuyến nghị trong Java."
+    },
+    {
+      "id": "q68",
+      "ref": "Q67",
+      "topic": "Design Patterns",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Factory Pattern giúp giải quyết vấn đề nào tốt nhất?",
+      "options": [
+        "Tăng tốc JVM bằng cách bỏ object creation",
+        "Ẩn logic khởi tạo object và tách client khỏi class cụ thể",
+        "Bắt buộc chỉ còn 1 instance cho toàn hệ thống",
+        "Tự động mapping object với database"
+      ],
+      "answer": 1,
+      "explanation": "**Factory Pattern** đóng gói logic tạo object, giúp client code phụ thuộc abstraction thay vì `new` class cụ thể ở nhiều nơi. Nhờ đó code linh hoạt hơn khi thay đổi implementation."
+    },
+    {
+      "id": "q69",
+      "ref": "Q68",
+      "topic": "Design Patterns",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Builder Pattern đặc biệt hữu ích trong tình huống nào?",
+      "options": [
+        "Object chỉ có 1-2 field đơn giản",
+        "Object có nhiều tham số tùy chọn, cần tạo theo từng bước dễ đọc",
+        "Cần đảm bảo chỉ có một instance toàn hệ thống",
+        "Cần parse JSON nhanh hơn"
+      ],
+      "answer": 1,
+      "explanation": "**Builder** phù hợp khi constructor dài nhiều tham số dễ nhầm thứ tự. Cách `User.builder().name(...).email(...).build()` giúp code rõ ràng, giảm lỗi và dễ mở rộng field mới."
+    },
+    {
+      "id": "q70",
+      "ref": "Q69",
+      "topic": "Design Patterns",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Adapter Pattern có mục tiêu chính là gì?",
+      "options": [
+        "Tăng tốc query database",
+        "Biến đổi interface không tương thích để làm việc cùng nhau",
+        "Ẩn toàn bộ logic business khỏi service",
+        "Tạo object theo singleton"
+      ],
+      "answer": 1,
+      "explanation": "**Adapter** hoạt động như bộ chuyển đổi interface. Nó cho phép code mới dùng lại thư viện/cổng tích hợp cũ mà không sửa trực tiếp source của bên thứ ba."
+    },
+    {
+      "id": "q71",
+      "ref": "Q70",
+      "topic": "Design Patterns",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Phát biểu nào đúng về Proxy Pattern trong backend Java/Spring?",
+      "options": [
+        "Proxy luôn thay thế hoàn toàn object thật, không gọi object thật",
+        "Proxy bọc object thật để thêm behavior như logging, security, transaction",
+        "Proxy chỉ dùng cho network reverse proxy như Nginx",
+        "Proxy bắt buộc phải dùng reflection manual"
+      ],
+      "answer": 1,
+      "explanation": "**Proxy** giữ cùng interface với object thật và chèn cross-cutting concerns trước/sau lời gọi thật. Trong Spring, AOP proxy là nền tảng cho `@Transactional`, security interceptor, logging..."
+    },
+    {
+      "id": "q72",
+      "ref": "Q71",
+      "topic": "Design Patterns",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Decorator Pattern khác Proxy ở điểm nhấn nào?",
+      "options": [
+        "Decorator tập trung mở rộng hành vi theo kiểu xếp lớp, Proxy thường tập trung kiểm soát truy cập/ủy quyền",
+        "Decorator chỉ dùng cho UI, Proxy chỉ dùng cho backend",
+        "Decorator không thể chain nhiều lớp",
+        "Decorator không cần interface chung"
+      ],
+      "answer": 0,
+      "explanation": "Cả hai đều bọc object, nhưng **Decorator** nhắm tới mở rộng hành vi linh hoạt theo lớp (chain), còn **Proxy** thường nhắm vào kiểm soát truy cập, lazy loading, remote access."
+    },
+    {
+      "id": "q73",
+      "ref": "Q72",
+      "topic": "Design Patterns",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Lợi ích chính của Strategy Pattern là gì?",
+      "options": [
+        "Giảm số lượng class bằng cách gom mọi thuật toán vào 1 class lớn",
+        "Cho phép thay đổi thuật toán runtime mà không sửa code client",
+        "Đảm bảo transaction luôn rollback",
+        "Thay thế hoàn toàn dependency injection"
+      ],
+      "answer": 1,
+      "explanation": "**Strategy** đóng gói từng thuật toán trong class riêng và chọn tại runtime. Cách này giảm `if/else` dài, tuân thủ OCP và dễ mở rộng chiến lược mới."
+    },
+    {
+      "id": "q74",
+      "ref": "Q73",
+      "topic": "Design Patterns",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Observer Pattern phù hợp nhất với bài toán nào?",
+      "options": [
+        "Sắp xếp danh sách theo nhiều tiêu chí",
+        "Một thay đổi trạng thái cần tự động thông báo cho nhiều subscriber",
+        "Khởi tạo object phức tạp nhiều tham số",
+        "Tối ưu truy vấn SQL bằng index"
+      ],
+      "answer": 1,
+      "explanation": "**Observer** phù hợp cho mô hình publish/subscribe: subject phát sự kiện, nhiều observer nhận cập nhật. Ví dụ: event domain, notification, listener trong UI hoặc backend."
+    },
+    {
+      "id": "q75",
+      "ref": "Q74",
+      "topic": "Design Patterns",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Template Method Pattern giúp gì cho thiết kế thuật toán?",
+      "options": [
+        "Xóa hoàn toàn inheritance khỏi codebase",
+        "Định nghĩa skeleton thuật toán ở class cha, cho class con override từng bước",
+        "Tạo instance duy nhất toàn hệ thống",
+        "Tự động sinh SQL query"
+      ],
+      "answer": 1,
+      "explanation": "**Template Method** giữ khung xử lý chung ở abstract class và cho phép subclass tùy biến hook/step cụ thể. Nhờ đó tái sử dụng logic ổn định và giảm duplicate code."
+    },
+    {
+      "id": "q76",
+      "ref": "Q75",
+      "topic": "Design Patterns",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Repository Pattern trong ứng dụng Spring thường mang lại lợi ích nào?",
+      "options": [
+        "Buộc mọi query phải là native SQL",
+        "Tách logic truy cập dữ liệu khỏi business logic và dễ mock khi test",
+        "Thay thế hoàn toàn service layer",
+        "Tăng tốc mạng giữa microservices"
+      ],
+      "answer": 1,
+      "explanation": "**Repository Pattern** đóng gói data access qua abstraction, giúp service không phụ thuộc chi tiết persistence. Nhờ đó code dễ test, dễ thay đổi DB/ORM hơn."
+    },
+    {
+      "id": "q77",
+      "ref": "Q76",
+      "topic": "Design Patterns",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Trong kiến trúc MVC, thành phần nào chịu trách nhiệm xử lý nghiệp vụ chính?",
+      "options": [
+        "View",
+        "Model/Service layer",
+        "Controller chỉ render HTML",
+        "Repository"
+      ],
+      "answer": 1,
+      "explanation": "Trong MVC hiện đại backend, **Controller** nhận request/điều phối, **Model/Service** xử lý nghiệp vụ, **View/Response** hiển thị dữ liệu. Không nên nhồi business logic nặng vào controller."
+    },
+    {
+      "id": "q78",
+      "ref": "Q77",
+      "topic": "Architecture",
+      "type": "mcq",
+      "difficulty": "hard",
+      "question": "Theo CAP theorem, trong lúc có network partition (P), hệ phân tán phải đánh đổi giữa điều gì?",
+      "options": [
+        "Consistency và Availability",
+        "Latency và Throughput",
+        "Durability và Isolation",
+        "CPU và Memory"
+      ],
+      "answer": 0,
+      "explanation": "CAP nói rằng khi xảy ra **Partition (P)**, hệ thống không thể đồng thời đảm bảo cả **Consistency (C)** và **Availability (A)** tuyệt đối. Thiết kế thực tế chọn ưu tiên tùy domain và SLA."
+    },
+    {
+      "id": "q79",
+      "ref": "Q78",
+      "topic": "Architecture",
+      "type": "mcq",
+      "difficulty": "hard",
+      "question": "Phát biểu nào đúng nhất khi so sánh ACID và BASE?",
+      "options": [
+        "ACID ưu tiên eventual consistency, BASE ưu tiên transaction chặt chẽ",
+        "ACID thường dùng cho hệ yêu cầu nhất quán mạnh; BASE chấp nhận eventual consistency để đổi lấy khả năng scale/availability",
+        "ACID và BASE là hai tên gọi khác nhau của cùng một mô hình",
+        "BASE chỉ dùng cho hệ thống không có database"
+      ],
+      "answer": 1,
+      "explanation": "**ACID** phù hợp giao dịch cần tính đúng tuyệt đối (ví dụ banking ledger). **BASE** phù hợp hệ phân tán lớn, ưu tiên khả dụng và mở rộng, chấp nhận dữ liệu đồng bộ dần theo thời gian."
+    },
+    {
+      "id": "q80",
+      "ref": "Q79",
+      "topic": "Architecture",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Trong chiến lược cache cho API đọc nhiều, mẫu nào phổ biến nhất để giảm tải DB mà vẫn giữ app logic rõ ràng?",
+      "options": [
+        "Cache-Aside",
+        "Write-Through bắt buộc cho mọi hệ thống",
+        "Cache toàn bộ request body",
+        "Chỉ cache ở browser, không cache phía server"
+      ],
+      "answer": 0,
+      "explanation": "**Cache-Aside**: đọc cache trước, miss thì đọc DB rồi set lại cache. Mẫu này linh hoạt và rất phổ biến cho workload read-heavy. Cần thêm TTL/invalidation phù hợp để tránh stale data."
+    },
+    {
+      "id": "q81",
+      "ref": "Q80",
+      "topic": "Architecture",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Chỉ mục (index) trong database giúp gì nhiều nhất?",
+      "options": [
+        "Giảm kích thước bảng dữ liệu",
+        "Tăng tốc truy vấn SELECT theo điều kiện/join/order phù hợp",
+        "Loại bỏ hoàn toàn full table scan trong mọi trường hợp",
+        "Tự động sửa dữ liệu trùng lặp"
+      ],
+      "answer": 1,
+      "explanation": "Index giúp DB định vị dữ liệu nhanh hơn, giảm số bản ghi phải scan. Tuy nhiên index không miễn phí: tăng chi phí ghi (`INSERT/UPDATE/DELETE`) và không phải query nào cũng tận dụng tốt."
+    },
+    {
+      "id": "q82",
+      "ref": "Q81",
+      "topic": "Architecture",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Điểm khác biệt cốt lõi giữa SQL và NoSQL là gì?",
+      "options": [
+        "SQL luôn nhanh hơn NoSQL trong mọi bài toán",
+        "SQL chỉ chạy trên cloud, NoSQL chỉ chạy on-premise",
+        "SQL dùng schema chặt + quan hệ; NoSQL linh hoạt mô hình dữ liệu hơn và thường tối ưu scale ngang",
+        "NoSQL không hỗ trợ truy vấn"
+      ],
+      "answer": 2,
+      "explanation": "**SQL** mạnh về quan hệ và transaction chặt chẽ. **NoSQL** đa mô hình (document, key-value, column, graph), linh hoạt schema và thường dễ scale ngang cho một số workload cụ thể."
+    },
+    {
+      "id": "q83",
+      "ref": "Q82",
+      "topic": "Architecture",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Lợi ích chính của HikariCP trong ứng dụng Spring Boot là gì?",
+      "options": [
+        "Tạo connection mới cho mỗi query để đảm bảo dữ liệu mới nhất",
+        "Quản lý connection pool hiệu quả, giảm overhead tạo kết nối DB liên tục",
+        "Thay thế hoàn toàn transaction manager",
+        "Tự động tối ưu mọi câu SQL mà không cần index"
+      ],
+      "answer": 1,
+      "explanation": "HikariCP là connection pool mặc định của Spring Boot, nổi bật ở hiệu năng và độ ổn định. Pool giúp borrow/return connection nhanh thay vì mở kết nối DB mới cho từng request."
+    },
+    {
+      "id": "q84",
+      "ref": "Q83",
+      "topic": "Architecture",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Phát biểu nào đúng về tính idempotent của HTTP methods?",
+      "options": [
+        "POST và PATCH luôn idempotent",
+        "PUT thường idempotent, POST thường không idempotent",
+        "GET không idempotent vì mỗi lần gọi trả timestamp khác",
+        "DELETE luôn non-idempotent"
+      ],
+      "answer": 1,
+      "explanation": "Theo semantics HTTP: **PUT** là idempotent (gửi lại cùng payload thường cho cùng trạng thái), **POST** thường không. `PATCH` tùy thiết kế API; `DELETE` vẫn được xem là idempotent về trạng thái resource."
+    },
+    {
+      "id": "q85",
+      "ref": "Q84",
+      "topic": "Architecture",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Chiến lược API versioning nào phổ biến và dễ nhìn thấy nhất với client?",
+      "options": [
+        "Version qua URI path (ví dụ `/api/v1/users`)",
+        "Version qua tên database",
+        "Version qua tên branch Git",
+        "Không cần versioning nếu dùng JSON"
+      ],
+      "answer": 0,
+      "explanation": "Version trong URI (`/v1`, `/v2`) là cách phổ biến vì dễ quan sát, dễ routing và dễ debug. Ngoài ra có header/media-type versioning tùy tiêu chuẩn tổ chức."
+    },
+    {
+      "id": "q86",
+      "ref": "Q85",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Best practice logging nào phù hợp cho Spring Boot production?",
+      "options": [
+        "Dùng `System.out.println` để tránh phụ thuộc framework logging",
+        "Log structured theo level phù hợp, thêm correlation/request id và tránh log dữ liệu nhạy cảm",
+        "Set toàn bộ log level thành DEBUG ở production để dễ tra lỗi",
+        "Chỉ log ở controller, không log service/repository"
+      ],
+      "answer": 1,
+      "explanation": "Logging tốt cần **có cấu trúc**, đúng level (`INFO/WARN/ERROR`), có trace/correlation id để theo luồng request, và tuyệt đối tránh lộ secret/PII trong log."
+    },
+    {
+      "id": "q87",
+      "ref": "Q86",
+      "topic": "Architecture",
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Lợi ích quan trọng của Docker với Java backend là gì?",
+      "options": [
+        "Biến ứng dụng Java thành native code không cần JVM",
+        "Đóng gói app + runtime nhất quán giữa dev/test/prod",
+        "Thay thế hoàn toàn Kubernetes",
+        "Loại bỏ nhu cầu build CI"
+      ],
+      "answer": 1,
+      "explanation": "Docker giúp chuẩn hóa môi trường chạy: image chứa app và runtime cần thiết nên giảm lỗi kiểu “chạy máy em được”. Điều này rất hữu ích cho CI/CD và deploy nhất quán."
+    },
+    {
+      "id": "q88",
+      "ref": "Q87",
+      "topic": "Spring",
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Cách chia tầng test phổ biến trong Spring Boot để vừa nhanh vừa đáng tin cậy là gì?",
+      "options": [
+        "Chỉ viết `@SpringBootTest` cho tất cả vì đầy đủ nhất",
+        "Kết hợp unit test + slice test (`@WebMvcTest`, `@DataJpaTest`) + một phần integration test",
+        "Chỉ test thủ công trên Postman",
+        "Bỏ test repository vì ORM đã đảm bảo đúng"
+      ],
+      "answer": 1,
+      "explanation": "Chiến lược hiệu quả là mix nhiều tầng: unit test cho logic nhỏ, slice test cho web/persistence, và integration test cho luồng quan trọng. Cách này cân bằng tốc độ chạy và độ tin cậy."
+    }
+  ]
+}
